@@ -15,6 +15,7 @@ export default function SetUp() {
     const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${key}&city=${location}&days=${days}`;
     const { data: weather } = await axios.get(url);
     AsyncStorage.setItem('user', JSON.stringify({ location: [location], user: name }));
+    
   }
 
   return (
