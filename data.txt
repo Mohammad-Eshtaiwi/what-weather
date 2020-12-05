@@ -1,0 +1,7 @@
+temp
+datetime
+weather.icon
+weather.description
+city_name
+country_code
+rh
