@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { If, Else, Then } from 'react-if';
 import SavedUser from './savedUser';
 import SetUp from './setup';
-
+import Login from './login';
 function Home() {
   async function getUser() {
     const result = await AsyncStorage.getItem('user');
@@ -21,10 +21,11 @@ function Home() {
     <>
       <If condition={logedIn}>
         <Then>
+          <SetUp></SetUp>
           <SavedUser></SavedUser>
         </Then>
         <Else>
-          <SetUp></SetUp>
+          <Login />
         </Else>
       </If>
     </>
