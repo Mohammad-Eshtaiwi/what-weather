@@ -16,9 +16,7 @@ let width1 = Dimensions.get('window').width;
 const Weather = () => {
   const navigation = useNavigation();
 
-  const { activeLocation, setActiveLocation, setSavedLocations, savedLocations } = useContext(
-    LocationsContext
-  );
+  const { activeLocation, setActiveLocation, setSavedLocations, savedLocations } = useContext(LocationsContext);
 
   const [weatherInLocation, setWeatherInLocation] = useState([]);
   async function getweather() {
@@ -29,7 +27,7 @@ const Weather = () => {
     const currentLocation = activeLocation || locationFromStorage;
     setActiveLocation(currentLocation);
     const key = 'abfde05b4f62407ebd4acb95e3c1c071';
-    const days = 5;
+    const days = 10;
     const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${key}&city=${currentLocation}&days=${days}`;
     const { data } = await axios({ method: 'get', url });
     setWeatherInLocation(data);
@@ -59,14 +57,11 @@ const Weather = () => {
           <Text style={styles.city}>{weatherInLocation.city_name}</Text>
         </View>
         <View style={styles.item}>
-          <Image
-            source={{ uri: `https://www.weatherbit.io/static/img/icons/${item.weather.icon}.png` }}
-            style={{ width: 80, height: 80 }}
-          />
+          <Image source={{ uri: `https://www.weatherbit.io/static/img/icons/${item.weather.icon}.png` }} style={{ width: 80, height: 80 }} />
         </View>
         <View style={styles.item}>
           <Text style={(styles.description, styles.rh)}>
-            <Entypo name="drop" size={16} color="#f1f1f1" />
+            <Entypo name='drop' size={16} color='#f1f1f1' />
             <View style={styles.spaceBetween}></View>
             {item.rh}%
           </Text>
@@ -78,12 +73,7 @@ const Weather = () => {
   };
   return (
     <>
-      <FlatList
-        style={styles.flat}
-        data={weatherInLocation.data}
-        renderItem={weatherCard}
-        keyExtractor={() => uuid()}
-      />
+      <FlatList style={styles.flat} data={weatherInLocation.data} renderItem={weatherCard} keyExtractor={() => uuid()} />
     </>
   );
 };

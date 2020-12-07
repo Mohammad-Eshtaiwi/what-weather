@@ -29,7 +29,7 @@ export default function Login({ navigation }) {
 
   async function submitHandler() {
     const key = 'abfde05b4f62407ebd4acb95e3c1c071';
-    const days = 5;
+    const days = 10;
     const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${key}&city=${location}&days=${days}`;
     const { data: weather } = await axios.get(url);
 
