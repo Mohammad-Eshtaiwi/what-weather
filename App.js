@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-get-random-values';
 import { StyleSheet, View, Text } from 'react-native';
-
+import { Image } from 'react-native-elements';
 import Home from './components/home/home';
 import { Header } from 'react-native-elements';
 import { mainColor } from './styles/colors';
@@ -19,20 +19,14 @@ export default function App() {
     <LocationsProvider>
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen name='Login' component={Login} options={{ headerTitle: (props) => <Image style={styles.logo} source={{ uri: 'https://i.ibb.co/6YwXGvg/Png-Item-3999742.png' }} /> }} />
           <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerTitle: props => <Text>Login</Text> }}
-          />
-          <Stack.Screen
-            name="Home"
+            name='Home'
             component={Home}
             options={{
               header: () => (
                 <Header
-                  leftComponent={props => (
-                    <Text style={{ color: '#fff', fontSize: 13, fontWeight: 'bold' }}>Weather</Text>
-                  )}
+                  leftComponent={(props) => <Text style={{ color: '#fff', fontSize: 13, fontWeight: 'bold' }}>Weather</Text>}
                   containerStyle={{
                     backgroundColor: mainColor,
                   }}
@@ -55,5 +49,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+  },
+  logo: {
+    width: 80,
+    height: 80,
+    marginHorizontal: 'auto',
+    marginTop: 150,
+    padding: 30,
   },
 });

@@ -1,13 +1,11 @@
 import React, { useContext } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocationsContext } from '../context/locations-context';
 import { v4 as uuid } from 'uuid';
 
 export default function Locations({ navigation }) {
-  const { savedLocations, setSavedLocations, activeLocation, setActiveLocation } = useContext(
-    LocationsContext
-  );
+  const { savedLocations, setSavedLocations, activeLocation, setActiveLocation } = useContext(LocationsContext);
   console.log('Hiiiiiii its meeee');
   async function reactivateLocation(activeNewLocation) {
     console.log(activeNewLocation);
@@ -21,14 +19,13 @@ export default function Locations({ navigation }) {
 
   console.log('locations');
   const Item = ({ item }) => {
-    console.log('tiiitle____dnfgmn nglk', item);
     return (
       <TouchableOpacity
         onPress={() => {
           reactivateLocation(item);
         }}
       >
-        <Text>{item}</Text>
+        <Text style={styles.paragraph}>{item}</Text>
       </TouchableOpacity>
     );
   };
@@ -40,3 +37,12 @@ export default function Locations({ navigation }) {
     </>
   );
 }
+const styles = StyleSheet.create({
+  paragraph: {
+    margin: 20,
+    fontSize: 35,
+    textAlign: 'center',
+    color: '#6ec9d9',
+    fontWeight: 'bold',
+  },
+});
