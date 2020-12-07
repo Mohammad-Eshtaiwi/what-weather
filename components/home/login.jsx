@@ -33,10 +33,7 @@ export default function Login({ navigation }) {
     const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${key}&city=${location}&days=${days}`;
     const { data: weather } = await axios.get(url);
 
-    AsyncStorage.setItem(
-      'user',
-      JSON.stringify({ location: [location], user: name, activeLocation: location })
-    ).then(() => {
+    AsyncStorage.setItem('user', JSON.stringify({ location: [location], user: name, activeLocation: location })).then(() => {
       navigation.navigate('Home');
     });
     state.setSavedLocations([...state.savedLocations, location]);
@@ -44,9 +41,7 @@ export default function Login({ navigation }) {
   }
   function getUserLocation() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
-      setErrorMsg(
-        'Oops, this will not work on Sketch in an Android emulator. Try it on your device!'
-      );
+      setErrorMsg('Oops, this will not work on Sketch in an Android emulator. Try it on your device!');
     } else {
       (async () => {
         let { status } = await Location.requestPermissionsAsync();
@@ -71,43 +66,46 @@ export default function Login({ navigation }) {
 
   return (
     <>
-      <Text>Hello and welcome to what weather</Text>
-      <Text>Please enter your name and your location</Text>
+      <Text style={styles.paragraph}>Hello and welcome to what weather</Text>
+      <Text style={styles.paragraph}>Please enter your name and your location</Text>
 
       <Input
-        placeholder="your name"
+        placeholder='your name'
         leftIcon={{ type: 'font-awesome', name: 'user' }}
         leftIconContainerStyle={styles.icon}
         value={name}
-        onChangeText={text => {
+        onChangeText={(text) => {
           // console.log(text);
           setName(text);
         }}
       />
 
       <Input
-        placeholder="Location"
+        placeholder='Location'
         leftIcon={{ type: 'font-awesome', name: 'map-marker' }}
         leftIconContainerStyle={styles.icon}
         value={location}
-        onChangeText={text => {
+        onChangeText={(text) => {
           setLocation(text);
         }}
       />
       <Button
-        title="Get Location"
+        containerStyle={{ width: '100%' }}
+        style={styles.button}
+        title='Get Location'
+        titleStyle={{ textAlign: 'center' }}
         onPress={() => {
           // console.log('user location');
           getUserLocation();
         }}
       />
-
+      <Text></Text>
       <Button
         containerStyle={{ width: '100%' }}
-        title="VIEW NOW"
+        style={styles.button}
+        title='VIEW NOW'
         titleStyle={{ textAlign: 'center' }}
         onPress={() => {
-          // console.log('Hello Eshtaiwi');
           submitHandler();
         }}
       />
@@ -127,8 +125,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
   },
   paragraph: {
-    margin: 24,
-    fontSize: 18,
+    margin: 20,
+    fontSize: 25,
     textAlign: 'center',
+    color: '#6ec9d9',
+    fontWeight: 'bold',
+  },
+  button: {
+    marginTop: 20,
   },
 });

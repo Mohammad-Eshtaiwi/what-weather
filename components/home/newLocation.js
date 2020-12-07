@@ -4,9 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function NewLocation({ navigation }) {
-  const { savedLocations, setSavedLocations, activeLocation, setActiveLocation } = useContext(
-    LocationsContext
-  );
+  const { savedLocations, setSavedLocations, activeLocation, setActiveLocation } = useContext(LocationsContext);
   const [location, setLocation] = useState('');
   async function submitHandler() {
     setActiveLocation(location);
@@ -19,21 +17,22 @@ export default function NewLocation({ navigation }) {
   }
   return (
     <View>
-      <Text>Add New Location</Text>
+      <Text style={styles.paragraph}>Add New Location</Text>
 
       <Input
-        placeholder="Location"
+        placeholder='Location'
         leftIcon={{ type: 'font-awesome', name: 'map-marker' }}
         leftIconContainerStyle={styles.icon}
         value={location}
-        onChangeText={text => {
+        onChangeText={(text) => {
           setLocation(text);
         }}
       />
       <Button
         containerStyle={{ width: '100%' }}
-        title="Add"
+        title='Add'
         titleStyle={{ textAlign: 'center' }}
+        style={styles.buttom}
         onPress={() => {
           // console.log('Hello Eshtaiwi');
           submitHandler();
@@ -49,7 +48,12 @@ const styles = StyleSheet.create({
 
   paragraph: {
     margin: 24,
-    fontSize: 18,
+    fontSize: 30,
     textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#6ec9d9',
+  },
+  buttom: {
+    marginTop: 50,
   },
 });
