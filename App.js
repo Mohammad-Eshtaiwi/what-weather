@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-get-random-values';
 import { StyleSheet, View, Text } from 'react-native';
 
-import SavedUserScreen from './components/home/savedUser';
+import Home from './components/home/home';
 import { Header } from 'react-native-elements';
 import { mainColor } from './styles/colors';
 import Login from './components/home/login';
@@ -23,14 +23,10 @@ export default function App() {
           options={{ headerTitle: props => <Text>Login</Text> }}
         />
         <Stack.Screen
-          name="Weather"
-          component={SavedUserScreen}
+          name="Home"
+          component={Home}
           options={{
             header: () => (
-              // {
-              //   text: 'Weather',
-              //   style: { color: '#fff', fontSize: 26, fontWeight: 'bold' },
-              // }
               <Header
                 leftComponent={props => (
                   <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Weather</Text>

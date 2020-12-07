@@ -18,7 +18,7 @@ export default function Login({ navigation }) {
     const result = await AsyncStorage.getItem('user');
     console.log(result && true);
     setLogedIn(result);
-    if (result) navigation.navigate('Weather');
+    if (result) navigation.navigate('Home');
   }
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Login({ navigation }) {
     // const { data: weather } = await axios.get(url);
 
     AsyncStorage.setItem('user', JSON.stringify({ location: [location], user: name })).then(() => {
-      navigation.navigate('Weather');
+      navigation.navigate('Home');
     });
   }
   function getUserLocation() {

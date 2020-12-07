@@ -1,20 +1,20 @@
-import { Platform, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Image } from 'react-native-elements';
 import { mainColor, secondaryColor } from '../../styles/colors';
-import { Dimensions } from 'react-native';
+
 import { Entypo } from '@expo/vector-icons';
-let width1 = Dimensions.get('window').width;
 
 const weatherCard = ({ item }) => {
   const date = new Date(item.datetime).toDateString().split(' ');
-
   return (
     <TouchableOpacity style={styles.card}>
       <View style={styles.item}>
         <Text style={styles.unit}>&#176;</Text>
         <Text style={styles.temp}>{Math.round(item.high_temp)}</Text>
         <Text style={styles.description}>{item.weather.description}</Text>
-        <Text style={styles.city}>{weatherInLocation.city_name}</Text>
+        {/* <Text style={styles.city}>{item.weatherInLocation.city_name}</Text> */}
+        <Text style={styles.city}>Amman</Text>
       </View>
       <View style={styles.item}>
         <Image
@@ -46,11 +46,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
-  flat: {
-    backgroundColor: '#ddd',
-    padding: 5,
-    width: width1,
-  },
+
   item: {
     // alignContent: 'center',
     textAlign: 'center',
