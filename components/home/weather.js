@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Image } from 'react-native-elements';
 import { mainColor, secondaryColor } from '../../styles/colors';
@@ -10,32 +10,43 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import jsonData from '../../data.json';
 import { Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { LocationsContext } from '../context/locations-context';
 
 let width1 = Dimensions.get('window').width;
 const Weather = () => {
   const navigation = useNavigation();
 
+  const { activeLocation, setActiveLocation, setSavedLocations, savedLocations } = useContext(
+    LocationsContext
+  );
+
   const [weatherInLocation, setWeatherInLocation] = useState([]);
   async function getweather() {
-    const { location } = JSON.parse(await AsyncStorage.getItem('user'));
-
+    // get current location from the local storage
+    const { activeLocation: locationFromStorage } = JSON.parse(await AsyncStorage.getItem('user'));
+    // if the used alreaded loged in then get the active location from the local storage
+    console.log('__locationFromStorage__', locationFromStorage);
+    const currentLocation = activeLocation || locationFromStorage;
+    setActiveLocation(currentLocation);
     const key = 'abfde05b4f62407ebd4acb95e3c1c071';
     const days = 5;
-    const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${key}&city=${location[0]}&days=${days}`;
-    // const { data } = await axios({ method: 'get', url });
-
-    setWeatherInLocation(jsonData);
+    const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${key}&city=${currentLocation}&days=${days}`;
+    const { data } = await axios({ method: 'get', url });
+    setWeatherInLocation(data);
+    // set Locations from local storage if empty
+    // if (savedLocations.length === 0) {
+    const { location } = JSON.parse(await AsyncStorage.getItem('user'));
+    console.log('location______', location);
+    setSavedLocations(location);
+    // }
   }
 
   useEffect(() => {
     getweather();
+
     console.log('hi');
-  }, []);
-  const Item = ({ title }) => (
-    <View style={styles.item}>
-      <Text>1</Text>
-    </View>
-  );
+  }, [activeLocation]);
+
   console.log(uuid());
   const weatherCard = ({ item }) => {
     const date = new Date(item.datetime).toDateString().split(' ');
@@ -48,11 +59,14 @@ const Weather = () => {
           <Text style={styles.city}>{weatherInLocation.city_name}</Text>
         </View>
         <View style={styles.item}>
-          <Image source={{ uri: `https://www.weatherbit.io/static/img/icons/${item.weather.icon}.png` }} style={{ width: 80, height: 80 }} />
+          <Image
+            source={{ uri: `https://www.weatherbit.io/static/img/icons/${item.weather.icon}.png` }}
+            style={{ width: 80, height: 80 }}
+          />
         </View>
         <View style={styles.item}>
           <Text style={(styles.description, styles.rh)}>
-            <Entypo name='drop' size={16} color='#f1f1f1' />
+            <Entypo name="drop" size={16} color="#f1f1f1" />
             <View style={styles.spaceBetween}></View>
             {item.rh}%
           </Text>
@@ -64,7 +78,12 @@ const Weather = () => {
   };
   return (
     <>
-      <FlatList style={styles.flat} data={weatherInLocation.data} renderItem={weatherCard} keyExtractor={() => uuid()} />
+      <FlatList
+        style={styles.flat}
+        data={weatherInLocation.data}
+        renderItem={weatherCard}
+        keyExtractor={() => uuid()}
+      />
     </>
   );
 };
