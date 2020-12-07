@@ -12,6 +12,6 @@ var firebaseConfig = {
   measurementId: 'G-DL4KVZ49CP',
 };
 // Initialize Firebase
-irebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 export { firebase };

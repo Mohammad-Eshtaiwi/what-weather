@@ -17,14 +17,11 @@ const weatherCard = ({ item }) => {
         <Text style={styles.city}>Amman</Text>
       </View>
       <View style={styles.item}>
-        <Image
-          source={{ uri: `https://www.weatherbit.io/static/img/icons/${item.weather.icon}.png` }}
-          style={{ width: 80, height: 80 }}
-        />
+        <Image source={{ uri: `https://www.weatherbit.io/static/img/icons/${item.weather.icon}.png` }} style={{ width: 80, height: 80 }} />
       </View>
       <View style={styles.item}>
         <Text style={(styles.description, styles.rh)}>
-          <Entypo name="drop" size={16} color="#f1f1f1" />
+          <Entypo name='drop' size={16} color='#f1f1f1' />
           <View style={styles.spaceBetween}></View>
           {item.rh}%
         </Text>
