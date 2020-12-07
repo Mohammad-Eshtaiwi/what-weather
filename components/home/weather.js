@@ -9,8 +9,12 @@ import { v4 as uuid } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jsonData from '../../data.json';
 import { Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 let width1 = Dimensions.get('window').width;
 const Weather = () => {
+  const navigation = useNavigation();
+
   const [weatherInLocation, setWeatherInLocation] = useState([]);
   async function getweather() {
     const { location } = JSON.parse(await AsyncStorage.getItem('user'));
@@ -36,7 +40,7 @@ const Weather = () => {
   const weatherCard = ({ item }) => {
     const date = new Date(item.datetime).toDateString().split(' ');
     return (
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity style={styles.card} onPress={navigation.navigate('Home')}>
         <View style={styles.item}>
           <Text style={styles.unit}>&#176;</Text>
           <Text style={styles.temp}>{Math.round(item.high_temp)}</Text>
@@ -44,14 +48,11 @@ const Weather = () => {
           <Text style={styles.city}>{weatherInLocation.city_name}</Text>
         </View>
         <View style={styles.item}>
-          <Image
-            source={{ uri: `https://www.weatherbit.io/static/img/icons/${item.weather.icon}.png` }}
-            style={{ width: 80, height: 80 }}
-          />
+          <Image source={{ uri: `https://www.weatherbit.io/static/img/icons/${item.weather.icon}.png` }} style={{ width: 80, height: 80 }} />
         </View>
         <View style={styles.item}>
           <Text style={(styles.description, styles.rh)}>
-            <Entypo name="drop" size={16} color="#f1f1f1" />
+            <Entypo name='drop' size={16} color='#f1f1f1' />
             <View style={styles.spaceBetween}></View>
             {item.rh}%
           </Text>
@@ -63,12 +64,7 @@ const Weather = () => {
   };
   return (
     <>
-      <FlatList
-        style={styles.flat}
-        data={weatherInLocation.data}
-        renderItem={weatherCard}
-        keyExtractor={() => uuid()}
-      />
+      <FlatList style={styles.flat} data={weatherInLocation.data} renderItem={weatherCard} keyExtractor={() => uuid()} />
     </>
   );
 };
