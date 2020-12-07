@@ -66,8 +66,8 @@ export default function Login({ navigation }) {
 
   return (
     <>
-      <Text style={styles.paragraph}>Hello and welcome to what weather</Text>
-      <Text style={styles.paragraph}>Please enter your name and your location</Text>
+      <Text style={styles.paragraph1}>Hello and welcome to what weather</Text>
+      <Text style={styles.paragraph2}>Please enter your name and your location</Text>
 
       <Input
         placeholder='your name'
@@ -124,7 +124,14 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf0f1',
   },
-  paragraph: {
+  paragraph1: {
+    marginTop: 100,
+    fontSize: 25,
+    textAlign: 'center',
+    color: '#6ec9d9',
+    fontWeight: 'bold',
+  },
+  paragraph2: {
     margin: 20,
     fontSize: 25,
     textAlign: 'center',
