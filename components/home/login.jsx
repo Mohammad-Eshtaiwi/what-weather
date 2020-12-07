@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-get-random-values';
@@ -7,9 +7,24 @@ import { Button, Input } from 'react-native-elements';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 
-export default function SetUp() {
+import { Header } from 'react-native-elements';
+
+export default function Login({ navigation }) {
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
+  const [logedIn, setLogedIn] = useState(false);
+
+  async function getUser() {
+    const result = await AsyncStorage.getItem('user');
+    console.log(result && true);
+    setLogedIn(result);
+    if (result) navigation.navigate('Weather');
+  }
+
+  useEffect(() => {
+    getUser();
+    console.log('hi');
+  }, [logedIn]);
 
   async function submitHandler() {
     const key = 'abfde05b4f62407ebd4acb95e3c1c071';
@@ -17,11 +32,15 @@ export default function SetUp() {
     // const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${key}&city=${location}&days=${days}`;
     // const { data: weather } = await axios.get(url);
 
-    AsyncStorage.setItem('user', JSON.stringify({ location: [location], user: name }));
+    AsyncStorage.setItem('user', JSON.stringify({ location: [location], user: name })).then(() => {
+      navigation.navigate('Weather');
+    });
   }
   function getUserLocation() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
-      setErrorMsg('Oops, this will not work on Sketch in an Android emulator. Try it on your device!');
+      setErrorMsg(
+        'Oops, this will not work on Sketch in an Android emulator. Try it on your device!'
+      );
     } else {
       (async () => {
         let { status } = await Location.requestPermissionsAsync();
@@ -50,27 +69,27 @@ export default function SetUp() {
       <Text>Please enter your name and your location</Text>
 
       <Input
-        placeholder='your name'
+        placeholder="your name"
         leftIcon={{ type: 'font-awesome', name: 'user' }}
         leftIconContainerStyle={styles.icon}
         value={name}
-        onChangeText={(text) => {
+        onChangeText={text => {
           // console.log(text);
           setName(text);
         }}
       />
 
       <Input
-        placeholder='Location'
+        placeholder="Location"
         leftIcon={{ type: 'font-awesome', name: 'map-marker' }}
         leftIconContainerStyle={styles.icon}
         value={location}
-        onChangeText={(text) => {
+        onChangeText={text => {
           setLocation(text);
         }}
       />
       <Button
-        title='Get Location'
+        title="Get Location"
         onPress={() => {
           // console.log('user location');
           getUserLocation();
@@ -79,7 +98,7 @@ export default function SetUp() {
 
       <Button
         containerStyle={{ width: '100%' }}
-        title='VIEW NOW'
+        title="VIEW NOW"
         titleStyle={{ textAlign: 'center' }}
         onPress={() => {
           // console.log('Hello Eshtaiwi');

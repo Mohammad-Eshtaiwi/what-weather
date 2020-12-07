@@ -5,14 +5,16 @@ import { Dimensions } from 'react-native';
 import jsonData from '../../data.json';
 import { secondaryColor, mainColor } from '../../styles/colors';
 import { Entypo } from '@expo/vector-icons';
-
 let width1 = Dimensions.get('window').width;
-
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { v4 as uuid } from 'uuid';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Locations from './locations';
+import Posts from './posts';
 
-function SavedUser() {
+const Tab = createBottomTabNavigator();
+function SavedUserScreen() {
   const [weatherInLocation, setWeatherInLocation] = useState([]);
   async function getweather() {
     const { location } = JSON.parse(await AsyncStorage.getItem('user'));
@@ -60,12 +62,19 @@ function SavedUser() {
     );
   };
   return (
-    <FlatList
-      style={styles.flat}
-      data={weatherInLocation.data}
-      renderItem={weatherCard}
-      keyExtractor={() => uuid()}
-    />
+    <>
+      <FlatList
+        style={styles.flat}
+        data={weatherInLocation.data}
+        renderItem={weatherCard}
+        keyExtractor={() => uuid()}
+      />
+      <View></View>
+      <Tab.Navigator>
+        <Tab.Screen name="Locations" component={Locations} />
+        <Tab.Screen name="Posts" component={Posts} />
+      </Tab.Navigator>
+    </>
   );
 }
 const styles = StyleSheet.create({
@@ -122,4 +131,4 @@ const styles = StyleSheet.create({
   fontDay: { fontSize: 20, color: mainColor, fontWeight: 'bold' },
 });
 
-export default SavedUser;
+export default SavedUserScreen;

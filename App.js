@@ -1,15 +1,51 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-get-random-values';
-import { StyleSheet, View } from 'react-native';
-import SetUp from './components/home/setup';
-import Home from './components/home/home';
+import { StyleSheet, View, Text } from 'react-native';
+
+import SavedUserScreen from './components/home/savedUser';
+import { Header } from 'react-native-elements';
+import { mainColor } from './styles/colors';
+import Login from './components/home/login';
+// import { LogBox } from 'react-native';
+// LogBox.ignoreLogs(['Setting a timer']);
 
 export default function App() {
+  const Stack = createStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <Home></Home>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerTitle: props => <Text>Login</Text> }}
+        />
+        <Stack.Screen
+          name="Weather"
+          component={SavedUserScreen}
+          options={{
+            header: () => (
+              // {
+              //   text: 'Weather',
+              //   style: { color: '#fff', fontSize: 26, fontWeight: 'bold' },
+              // }
+              <Header
+                leftComponent={props => (
+                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Weather</Text>
+                )}
+                containerStyle={{
+                  backgroundColor: mainColor,
+                }}
+              />
+            ),
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+    // <View style={styles.container}>
+    // </View>
   );
 }
 

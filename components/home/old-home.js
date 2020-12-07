@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text } from 'react-native';
 import { If, Else, Then } from 'react-if';
 import SavedUser from './savedUser';
-import SetUp from './setup';
-import Login from './login';
-function Home() {
+import SetUp from './home';
+function HomeScreen() {
   async function getUser() {
     const result = await AsyncStorage.getItem('user');
     console.log(result && true);
@@ -21,15 +21,12 @@ function Home() {
     <>
       <If condition={logedIn}>
         <Then>
-          <SetUp></SetUp>
           <SavedUser></SavedUser>
         </Then>
-        <Else>
-          <Login />
-        </Else>
+        <Else></Else>
       </If>
     </>
   );
 }
 
-export default Home;
+export default HomeScreen;
