@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
-import { Text, TextInput, Image, View, Button, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import {
+  Text,
+  TextInput,
+  Image,
+  View,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 // import DismissKeyboard from '../../util/keyboard.dismiss';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
-import { firebase } from '../../firebase/config';
+// import { firebase } from '../../firebase/config';
 
 export default function Posts() {
   const navigation = useNavigation();
@@ -15,7 +24,7 @@ export default function Posts() {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity style={styles.delete} onPress={deleteHandler}>
-          <MaterialIcons name='delete' size={24} color='black' />
+          <MaterialIcons name="delete" size={24} color="black" />
         </TouchableOpacity>
       ),
     });
@@ -25,12 +34,12 @@ export default function Posts() {
       .doc(item.id)
       .delete()
       .then(() => navigation.goBack())
-      .catch((error) => console.error('Error While Removing', error));
+      .catch(error => console.error('Error While Removing', error));
   };
   const updateHandler = () => {
     uriToBlob(image)
-      .then((blob) => uploadToFirebase(blob))
-      .then((url) => {
+      .then(blob => uploadToFirebase(blob))
+      .then(url => {
         // const url = `${snapshot.metadata.bucket}/${snapshot.metadata.fullPath}`;
         console.log('URLLLLLLL', url);
         postsRef
@@ -41,10 +50,10 @@ export default function Posts() {
             albumId,
           })
           .then(() => navigation.goBack())
-          .catch((error) => console.error('Error While Updating', error));
+          .catch(error => console.error('Error While Updating', error));
       });
   };
-  const uriToBlob = (uri) => {
+  const uriToBlob = uri => {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.onload = function () {
@@ -63,7 +72,7 @@ export default function Posts() {
       xhr.send(null);
     });
   };
-  const uploadToFirebase = (blob) => {
+  const uploadToFirebase = blob => {
     return new Promise((resolve, reject) => {
       var storageRef = firebase.storage().ref();
       storageRef
@@ -71,11 +80,11 @@ export default function Posts() {
         .put(blob, {
           contentType: 'image/jpeg',
         })
-        .then((snapshot) => {
+        .then(snapshot => {
           blob.close();
           resolve(storageRef.child(`posts/${value}.jpg`).getDownloadURL());
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error);
         });
     });

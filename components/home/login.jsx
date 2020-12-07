@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-get-random-values';
@@ -6,6 +6,7 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
+import { LocationsContext } from '../context/locations-context';
 
 import { Header } from 'react-native-elements';
 
@@ -13,7 +14,7 @@ export default function Login({ navigation }) {
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [logedIn, setLogedIn] = useState(false);
-
+  const state = useContext(LocationsContext);
   async function getUser() {
     const result = await AsyncStorage.getItem('user');
     console.log(result && true);
@@ -32,13 +33,20 @@ export default function Login({ navigation }) {
     const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${key}&city=${location}&days=${days}`;
     const { data: weather } = await axios.get(url);
 
-    AsyncStorage.setItem('user', JSON.stringify({ location: [location], user: name })).then(() => {
+    AsyncStorage.setItem(
+      'user',
+      JSON.stringify({ location: [location], user: name, activeLocation: location })
+    ).then(() => {
       navigation.navigate('Home');
     });
+    state.setSavedLocations([...state.savedLocations, location]);
+    state.setActiveLocation(location);
   }
   function getUserLocation() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
-      setErrorMsg('Oops, this will not work on Sketch in an Android emulator. Try it on your device!');
+      setErrorMsg(
+        'Oops, this will not work on Sketch in an Android emulator. Try it on your device!'
+      );
     } else {
       (async () => {
         let { status } = await Location.requestPermissionsAsync();
@@ -67,27 +75,27 @@ export default function Login({ navigation }) {
       <Text>Please enter your name and your location</Text>
 
       <Input
-        placeholder='your name'
+        placeholder="your name"
         leftIcon={{ type: 'font-awesome', name: 'user' }}
         leftIconContainerStyle={styles.icon}
         value={name}
-        onChangeText={(text) => {
+        onChangeText={text => {
           // console.log(text);
           setName(text);
         }}
       />
 
       <Input
-        placeholder='Location'
+        placeholder="Location"
         leftIcon={{ type: 'font-awesome', name: 'map-marker' }}
         leftIconContainerStyle={styles.icon}
         value={location}
-        onChangeText={(text) => {
+        onChangeText={text => {
           setLocation(text);
         }}
       />
       <Button
-        title='Get Location'
+        title="Get Location"
         onPress={() => {
           // console.log('user location');
           getUserLocation();
@@ -96,7 +104,7 @@ export default function Login({ navigation }) {
 
       <Button
         containerStyle={{ width: '100%' }}
-        title='VIEW NOW'
+        title="VIEW NOW"
         titleStyle={{ textAlign: 'center' }}
         onPress={() => {
           // console.log('Hello Eshtaiwi');
